@@ -14,13 +14,19 @@ void setup() {
   digitalWrite(powerPin,HIGH);
 }
 
-float cutoff = 1000.;
+double cutoff = 2000.*1e-6;
 void loop() {
   int sensorVal;
+  double lowpass = 0;
+  int oldtime = micros();
   while(1){
     sensorVal = analogRead(micPin);
+    lowpass = lowpass - (micros() - oldtime)*cutoff*(lowpass - sensorVal);
+    
     analogWrite(dacPin,sensorVal);
-    Serial.println(sensorVal);
+    Serial.println((int) round(lowpass));
+
+    oldtime = micros(); 
   }
 }
 
