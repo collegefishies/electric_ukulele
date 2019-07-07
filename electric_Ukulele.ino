@@ -14,7 +14,7 @@ void setup() {
   digitalWrite(powerPin,HIGH);
 }
 
-double cutoff = 2000.*1e-6;
+double cutoff = 4000.*1e-6;
 void loop() {
   int sensorVal;
   double lowpass = 0;
@@ -23,7 +23,7 @@ void loop() {
     sensorVal = analogRead(micPin);
     lowpass = lowpass - (micros() - oldtime)*cutoff*(lowpass - sensorVal);
     
-    analogWrite(dacPin,sensorVal);
+    analogWrite(dacPin,(int) round(lowpass));
     Serial.println((int) round(lowpass));
 
     oldtime = micros(); 
