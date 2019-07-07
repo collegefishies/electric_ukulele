@@ -14,17 +14,27 @@ void setup() {
   digitalWrite(powerPin,HIGH);
 }
 
-double cutoff = 4000.*1e-6;
+double cutoff = 20000.*1e-6;
+double hiCutoff = 10*1e-6;
 void loop() {
-  int sensorVal;
+  int sensorVal = analogRead(micPin);
+  int oldLowpass = 0;
   double lowpass = 0;
+  double bandpass = 0;
+  double dblPass = 0;
+  double oldBandpass = 0;
   int oldtime = micros();
   while(1){
     sensorVal = analogRead(micPin);
-    lowpass = lowpass - (micros() - oldtime)*cutoff*(lowpass - sensorVal);
-    
-    analogWrite(dacPin,(int) round(lowpass));
-    Serial.println((int) round(lowpass));
+    oldLowpass = lowpass;
+    oldBandpass = bandpass;
+
+    lowpass = lowpass - (micros() - oldtime)*cutoff*(lowpass - sensorVal);  //lowpass
+    bandpass = bandpass - (micros() - oldtime)*hiCutoff*(bandpass) + lowpass - oldLowpass; //first hi pass
+    dblPass = dblPass - (micros() - oldtime)*hiCutoff*(dblPass) + bandpass - oldBandpass; //second hi pass
+
+    analogWrite(dacPin,(int) 2*round(dblPass) + 500);
+    Serial.println((int) round(dblPass));
 
     oldtime = micros(); 
   }
