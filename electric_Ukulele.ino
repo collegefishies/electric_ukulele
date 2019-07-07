@@ -31,6 +31,11 @@ void loop() {
     dt = (micros() - oldtime)*1e-6;
 
     analogWrite(dacPin, round(lowpass));
+
+    T = T + dt;
+    if(++runs % 1000 == 0){
+      Serial.println(T/runs);
+    }
   }
 }
 
