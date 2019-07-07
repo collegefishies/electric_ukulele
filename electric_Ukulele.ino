@@ -18,6 +18,8 @@ void loop() {
   int oldtime;
   float lowpass = 0;
   float dt = 0;
+  float T = 0;
+  int runs = 0;
   int sensorVal = analogRead(micPin);
 
   while(1){
