@@ -16,26 +16,11 @@ void setup() {
 
 float cutoff = 1000.;
 void loop() {
-  int oldtime;
-  float lowpass = 0;
-  float dt = 0;
-  float T = 0;
-  int runs = 0;
-  int sensorVal = analogRead(micPin);
-
+  int sensorVal;
   while(1){
-    lowpass = lowpass -cutoff*dt*(lowpass - sensorVal);
-    oldtime = micros();
-
     sensorVal = analogRead(micPin);
-    dt = (micros() - oldtime)*1e-6;
-
-    analogWrite(dacPin, round(lowpass));
-
-    T = T + dt;
-    if(++runs % 1000 == 0){
-      Serial.println(T/runs);
-    }
+    analogWrite(dacPin,sensorVal);
+    Serial.println(sensorVal);
   }
 }
 
