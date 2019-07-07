@@ -24,7 +24,7 @@ void loop() {
   int sensorVal = analogRead(micPin);
 
   while(1){
-    lowpass = -cutoff*dt*(lowpass - sensorVal);
+    lowpass = lowpass -cutoff*dt*(lowpass - sensorVal);
     oldtime = micros();
 
     sensorVal = analogRead(micPin);
