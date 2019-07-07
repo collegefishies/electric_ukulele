@@ -10,7 +10,8 @@ const int batteryPin = A7;
 
 void setup() {
   Serial.begin(20000000);
-
+  pinMode(powerPin,OUTPUT);
+  digitalWrite(powerPin,HIGH);
 }
 
 float cutoff = 1000.;
